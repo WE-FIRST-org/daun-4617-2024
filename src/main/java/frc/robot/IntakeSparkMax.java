@@ -5,14 +5,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-public class Intake {
+public class IntakeSparkMax {
     private XboxController controller;
 
     // right and left as if you were standing BEHIND the robot
     private CANSparkMax leftMotor;
     private CANSparkMax rightMotor;
 
-    public Intake() {
+    public IntakeSparkMax() {
         controller = new XboxController(0);
 
         leftMotor = new CANSparkMax(5, MotorType.kBrushless);
@@ -27,7 +27,8 @@ public class Intake {
     public void loop() {
         // checking if the X button is pressed on the controller 
         if (controller.getXButtonPressed()) {
-            // insert code here!
+            leftMotor.set(1);
+            rightMotor.set(-1);
         }
     }
 }
