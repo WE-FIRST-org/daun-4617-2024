@@ -2,8 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Arm{
     private CANSparkMax Motor1;
