@@ -6,7 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Intake;
+import frc.robot.Arm;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,6 +19,7 @@ import frc.robot.Intake;
 public class Robot extends TimedRobot {
   XboxController controller;
   Intake intake;
+  Arm arm;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -24,6 +27,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     intake = new Intake();
+    arm = new Arm();
     controller = new XboxController(0);
   }
 
@@ -41,7 +45,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    intake.loop(controller.getLeftY());
+    //intake.loop(controller.getLeftY());
+    arm.loop();
   }
 
   @Override
