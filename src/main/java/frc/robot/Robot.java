@@ -20,6 +20,7 @@ public class Robot extends TimedRobot {
   XboxController controller;
   Intake intake;
   Arm arm;
+  Spinner spinner;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
     intake = new Intake();
     arm = new Arm();
     controller = new XboxController(0);
+    spinner = new Spinner();
   }
 
   @Override
@@ -48,8 +50,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //intake.loop(controller.getLeftY());
-     
     arm.loop();
+    spinner.loop(controller.getLeftTriggerAxis());
   }
 
   @Override
