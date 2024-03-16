@@ -14,7 +14,7 @@ public class Spinner {
         motor.setNeutralMode(NeutralMode.Coast);
     }
 
-    public void loop() {
-        motor.set(VictorSPXControlMode.PercentOutput, 0.5);
+    public void loop(double speed) {
+        motor.set(VictorSPXControlMode.PercentOutput, speed);
     }
 }
