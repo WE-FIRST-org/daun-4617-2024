@@ -32,7 +32,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    arm.updatePosSMDB();
+  }
 
   @Override
   public void autonomousInit() {}
@@ -46,6 +48,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //intake.loop(controller.getLeftY());
+     
     arm.loop();
   }
 

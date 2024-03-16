@@ -24,11 +24,13 @@ public class IntakeSparkMax {
         rightMotor.setIdleMode(IdleMode.kCoast);
     }
 
-    public void loop() {
+    public void loop(double speed) {
         // checking if the X button is pressed on the controller 
-        if (controller.getXButtonPressed()) {
-            leftMotor.set(1);
-            rightMotor.set(-1);
-        }
+            leftMotor.set(speed);
+            rightMotor.set(speed);
+
+
+
+        
     }
 }
