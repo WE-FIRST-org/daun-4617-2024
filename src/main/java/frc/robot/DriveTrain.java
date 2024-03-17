@@ -1,12 +1,10 @@
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.XboxController;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
 
 public class Drivetrain {
     private CANSparkMax rightMotor1;
@@ -16,48 +14,32 @@ public class Drivetrain {
 
     private XboxController controller;
 
-    private double left;
-    private double right;
-
     public Drivetrain() {
-
-        controller = new XboxController(0);
-
-        //Right Motors
-        rightMotor1 = new CANSparkMax(1, MotorType.kBrushless);
+        // Right Motors
+        rightMotor1 = new CANSparkMax(2, MotorType.kBrushless);
         rightMotor1.restoreFactoryDefaults();
-        rightMotor1.setIdleMode(IdleMode.kCoast);
+        rightMotor1.setIdleMode(IdleMode.kBrake);
 
-        rightMotor2 = new CANSparkMax(2, MotorType.kBrushless);
+        rightMotor2 = new CANSparkMax(4, MotorType.kBrushless);
         rightMotor2.restoreFactoryDefaults();
-        rightMotor2.setIdleMode(IdleMode.kCoast);
+        rightMotor2.setIdleMode(IdleMode.kBrake);
         rightMotor2.follow(rightMotor1);
 
-        //Left Motors
-        leftMotor1 = new CANSparkMax(3, MotorType.kBrushless);
+        // Left Motors
+        leftMotor1 = new CANSparkMax(1, MotorType.kBrushless);
         leftMotor1.restoreFactoryDefaults();
-        leftMotor1.setIdleMode(IdleMode.kCoast);
-        leftMotor1.follow(rightMotor1);
+        leftMotor1.setIdleMode(IdleMode.kBrake);
 
-        leftMotor2 = new CANSparkMax(4, MotorType.kBrushless);
+        leftMotor2 = new CANSparkMax(3, MotorType.kBrushless);
         leftMotor2.restoreFactoryDefaults();
-        leftMotor2.setIdleMode(IdleMode.kCoast);
+        leftMotor2.setIdleMode(IdleMode.kBrake);
+        leftMotor2.follow(leftMotor1);
 
-        leftMotor1.setInverted(true);
-        leftMotor2.setInverted(true);
-        }
-
-        public void loop() {
-            right = controller.getRightY() - controller.getLeftX();
-            left = controller.getRightY() + controller.getLeftX();
-
-            rightMotor1.set(right);
-            leftMotor1.set(left);
-
-        }
-
-
-
+        rightMotor1.setInverted(true);
     }
 
-
+    public void loop(double throttle, double turn) {
+            rightMotor1.set(((throttle < 0 ? -1 : 1 )*throttle*throttle)-turn);
+            leftMotor1.set(((throttle < 0 ? -1 : 1 )*throttle*throttle)+turn);
+   }
+}

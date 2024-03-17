@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Arm {
-    public static final double FORWARD_POS = 2.55; 
+    public static final double FORWARD_POS = 2.477; 
     public static final double BACKWARD_POS = -1.43;
     private CANSparkMax motor1;
     private CANSparkMax motor2;
@@ -71,6 +71,7 @@ public class Arm {
         target = SmartDashboard.getNumber("target", 0);
         double arbFF = ff * Math.sin(Math.PI * armEncoder.getPosition() / (2 * FORWARD_POS));
         System.out.println(arbFF);
+        System.out.println(armController.getDFilter(0));
         armController.setReference(target, CANSparkMax.ControlType.kPosition, 0, arbFF);
 
         // if PID coefficients on SmartDashboard have changed, write new values to controller

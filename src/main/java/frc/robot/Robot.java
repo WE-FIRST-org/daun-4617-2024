@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Intake;
 import frc.robot.Arm;
+import frc.robot.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,10 +18,20 @@ import frc.robot.Arm;
  * project.
  */
 public class Robot extends TimedRobot {
-  XboxController controller;
+  XboxController driver;
+  XboxController operator;
   Intake intake;
   Arm arm;
   Spinner spinner;
+  Drivetrain Drivetrain;
+
+  private double joystickDeadband(double input) {
+    if(input * input < 0.001) {
+      return 0.0;
+    }
+    return input;
+  }
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -29,8 +40,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     intake = new Intake();
     arm = new Arm();
-    controller = new XboxController(0);
+    driver = new XboxController(0);
+    operator = new XboxController(1);
     spinner = new Spinner();
+    Drivetrain = new Drivetrain();
   }
 
   @Override
@@ -49,9 +62,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    //intake.loop(controller.getLeftY());
+    intake.loop(operator.getLeftY());
     arm.loop();
-    spinner.loop(controller.getLeftTriggerAxis());
+    spinner.loop(operator.getLeftTriggerAxis());
+    Drivetrain.loop(-joystickDeadband(driver.getLeftY() * 0.7), joystickDeadband(driver.getRightX()));
   }
 
   @Override
