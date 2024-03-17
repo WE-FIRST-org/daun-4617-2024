@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     intake.loop(operator.getLeftY());
-    arm.loop();
+    arm.disable(operator.getAButtonPressed());
     spinner.loop(operator.getLeftTriggerAxis());
     Drivetrain.loop(-joystickDeadband(driver.getLeftY() * 0.7), joystickDeadband(driver.getRightX()));
   }
