@@ -4,7 +4,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -18,11 +17,11 @@ public class Arm {
     private SparkPIDController armController;
     private RelativeEncoder armEncoder;
     public boolean disabled;
-    public double kP = 0.6;
-    public double kI = 0;
-    public double kD = 20;
-    public double kIz = 0;
-    public double kFF = -2.25;
+    public static final double KP = 0.6;
+    public static final double KI = 0;
+    public static final double KD = 20;
+    public static final double KIZ = 0;
+    public static final double KFF = -2.25;
 
     public Arm() {
         motor1 = new CANSparkMax(7, MotorType.kBrushless);
@@ -37,10 +36,10 @@ public class Arm {
         armController = motor1.getPIDController();
         armEncoder = motor1.getEncoder();
 
-        armController.setP(kP);
-        armController.setI(kI);
-        armController.setD(kD);
-        armController.setIZone(kIz);
+        armController.setP(KP);
+        armController.setI(KI);
+        armController.setD(KD);
+        armController.setIZone(KIZ);
         armController.setFF(0);
         armController.setOutputRange(-1, 1);
 
@@ -54,7 +53,7 @@ public class Arm {
 
     public void loop(double target) {
         if (!disabled) {
-        double arbFF = kFF * Math.sin(Math.PI * armEncoder.getPosition() / (2 * FORWARD_POS));
+        double arbFF = KFF * Math.sin(Math.PI * armEncoder.getPosition() / (2 * FORWARD_POS));
         armController.setReference(target, CANSparkMax.ControlType.kPosition, 0, arbFF);
         }
         if (disabled) {
@@ -66,6 +65,10 @@ public class Arm {
         if(checker == true) {
             disabled = !disabled;
         }
+    }
+
+    public void shootPos() {
+        
     }
 
 }

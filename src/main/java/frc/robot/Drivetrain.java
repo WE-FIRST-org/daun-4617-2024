@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -11,8 +9,6 @@ public class Drivetrain {
     private CANSparkMax rightMotor2;
     private CANSparkMax leftMotor1;
     private CANSparkMax leftMotor2;
-
-    private XboxController controller;
 
     public Drivetrain() {
         // Right Motors
