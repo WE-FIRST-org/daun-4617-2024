@@ -67,8 +67,17 @@ public class Arm {
         }
     }
 
-    public void shootPos() {
-        
+    public void shootPos(double target, boolean shift1, boolean shift2, boolean a, boolean b, boolean x, boolean y) {
+        // is this supposed to be .setReference??
+        // instead of target = 0??
+        if (shift1 && a) target = 0;
+        if (shift1 && b) target = 0;
+        if (shift1 && x) target = 0;
+        if (shift1 && y) target = 0;
+        if (shift2 && a) target = 0;
+        if (shift2 && b) target = 0;
+        if (shift2 && x) target = 0;
+        if (shift2 && y) target = 0;
     }
 
 }

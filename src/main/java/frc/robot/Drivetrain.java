@@ -1,6 +1,11 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -9,6 +14,19 @@ public class Drivetrain {
     private CANSparkMax rightMotor2;
     private CANSparkMax leftMotor1;
     private CANSparkMax leftMotor2;
+    // i don't know if i did this correct :(
+    private SparkPIDController rightDrivetrainController;
+    private RelativeEncoder rightDrivetrainEncoder;
+    private SparkPIDController leftDrivetrainController;
+    private RelativeEncoder leftDrivetrainEncoder;
+    public boolean disabled;
+
+    // they were declared public in Arm.java, will that be an issue here?
+    public static final double KP = 0;
+    public static final double KI = 0;
+    public static final double KD = 0;
+    public static final double KIZ = 0;
+    public static final double KFF = 0;
 
     public Drivetrain() {
         // Right Motors
@@ -32,6 +50,33 @@ public class Drivetrain {
         leftMotor2.follow(leftMotor1);
 
         rightMotor1.setInverted(true);
+
+        // PID
+        // i don't know if i did this correct (the sequel)
+        rightDrivetrainController = rightMotor1.getPIDController();
+        rightDrivetrainEncoder = rightMotor1.getEncoder();
+        leftDrivetrainController = leftMotor1.getPIDController();
+        leftDrivetrainEncoder = leftMotor1.getEncoder();
+
+        rightDrivetrainController.setP(KP);
+        rightDrivetrainController.setI(KI);
+        rightDrivetrainController.setD(KD);
+        rightDrivetrainController.setIZone(KIZ);
+        rightDrivetrainController.setFF(0);
+        rightDrivetrainController.setOutputRange(-1, 1);
+
+        rightDrivetrainEncoder.setPosition(0);
+        SmartDashboard.putNumber("position", 0); 
+
+        leftDrivetrainController.setP(KP);
+        leftDrivetrainController.setI(KI);
+        leftDrivetrainController.setD(KD);
+        leftDrivetrainController.setIZone(KIZ);
+        leftDrivetrainController.setFF(0);
+        leftDrivetrainController.setOutputRange(-1, 1);
+
+        leftDrivetrainEncoder.setPosition(0);
+        SmartDashboard.putNumber("position", 0); 
     }
 
     public void loop(double throttle, double turn) {

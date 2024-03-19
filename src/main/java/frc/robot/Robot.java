@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
     intake.loop(operator.getLeftY());
     intake.shoot(operator.getXButtonPressed());
     arm.disable(operator.getAButtonPressed());
-    arm.shootPos();
+    arm.shootPos(0, operator.getLeftBumper(), operator.getRightBumper(), operator.getAButton(), operator.getBButton(), operator.getXButton(), operator.getYButton());
     spinner.loop(operator.getLeftTriggerAxis());
     drivetrain.loop(-joystickDeadband(driver.getLeftY() * 0.7), joystickDeadband(driver.getRightX()));
   }
