@@ -58,12 +58,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    intake.loop(operator.getLeftY());
-    intake.shoot(operator.getXButtonPressed());
-    arm.disable(operator.getAButtonPressed());
-    arm.shootPos(0, operator.getLeftBumper(), operator.getRightBumper(), operator.getAButton(), operator.getBButton(), operator.getXButton(), operator.getYButton());
+    // intake
+    intake.loop(operator.getLeftTriggerAxis());
+    
+    // shoot
+    intake.shoot(operator.getRightTriggerAxis() > 0.5);
+
+    arm.shootPos(operator.getLeftBumper(), operator.getAButtonPressed(), operator.getBButtonPressed(), 
+      operator.getXButtonPressed(), operator.getYButtonPressed());
+    arm.loop();
     spinner.loop(operator.getLeftTriggerAxis());
-    drivetrain.loop(-joystickDeadband(driver.getLeftY() * 0.7), joystickDeadband(driver.getRightX()));
+    
+    // drive
+    drivetrain.loop(-joystickDeadband(driver.getLeftY() * 0.7),joystickDeadband(driver.getRightX() * 0.7));
   }
 
   @Override

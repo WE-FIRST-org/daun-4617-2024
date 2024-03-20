@@ -66,7 +66,7 @@ public class Drivetrain {
         rightDrivetrainController.setOutputRange(-1, 1);
 
         rightDrivetrainEncoder.setPosition(0);
-        SmartDashboard.putNumber("position", 0); 
+        SmartDashboard.putNumber("drivetrain right", 0); 
 
         leftDrivetrainController.setP(KP);
         leftDrivetrainController.setI(KI);
@@ -76,11 +76,11 @@ public class Drivetrain {
         leftDrivetrainController.setOutputRange(-1, 1);
 
         leftDrivetrainEncoder.setPosition(0);
-        SmartDashboard.putNumber("position", 0); 
+        SmartDashboard.putNumber("drivetrain right", 0); 
     }
 
     public void loop(double throttle, double turn) {
-            rightMotor1.set(((throttle < 0 ? -1 : 1 )*throttle*throttle)-turn);
-            leftMotor1.set(((throttle < 0 ? -1 : 1 )*throttle*throttle)+turn);
+            rightMotor1.set(((throttle < 0 ? -1 : 1 )*throttle*throttle)-((turn < 0 ? -1 : 1)*turn * turn));
+            leftMotor1.set(((throttle < 0 ? -1 : 1 )*throttle*throttle)+((turn < 0 ? -1 : 1) * turn * turn));
    }
 }

@@ -3,25 +3,29 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Arm {
-    public static final double FORWARD_POS = 2.477; 
-    public static final double BACKWARD_POS = -1.43;
+    public static final double FORWARD_POS = 2.404;
+    public static final double BACKWARD_POS = -1.12;
     private CANSparkMax motor1;
     private CANSparkMax motor2;
     private SparkPIDController armController;
     private RelativeEncoder armEncoder;
     public boolean disabled;
-    public static final double KP = 0.6;
+    public static final double KP = 2.6;
     public static final double KI = 0;
     public static final double KD = 20;
     public static final double KIZ = 0;
-    public static final double KFF = -2.25;
+    public static final double KFF = -2.65;
+    private static final double[] armPositions = new double[] {
+            FORWARD_POS, -0.85, 0, BACKWARD_POS, 0, 0, 0, 0
+            // a, b, (disable), y, [shifted (a, b, x, y)]
+    };
+    public static double target = 0;
 
     public Arm() {
         motor1 = new CANSparkMax(7, MotorType.kBrushless);
@@ -36,48 +40,66 @@ public class Arm {
         armController = motor1.getPIDController();
         armEncoder = motor1.getEncoder();
 
-        armController.setP(KP);
-        armController.setI(KI);
-        armController.setD(KD);
-        armController.setIZone(KIZ);
-        armController.setFF(0);
-        armController.setOutputRange(-1, 1);
+        armController.setP(KP, 0);
+        armController.setI(KI, 0);
+        armController.setD(KD, 0);
+        armController.setIZone(KIZ, 0);
+        armController.setFF(0, 0);
+        armController.setOutputRange(-1, 1, 0);
 
         armEncoder.setPosition(FORWARD_POS);
-        SmartDashboard.putNumber("position", 0); 
+        target = armEncoder.getPosition();
+        SmartDashboard.putNumber("position", 0);
     }
 
     public void updatePosSMDB() {
         SmartDashboard.putNumber("position", armEncoder.getPosition());
+        SmartDashboard.putNumber("ahhh", motor1.getAppliedOutput());
     }
 
-    public void loop(double target) {
+    public void loop() {
         if (!disabled) {
-        double arbFF = KFF * Math.sin(Math.PI * armEncoder.getPosition() / (2 * FORWARD_POS));
-        armController.setReference(target, CANSparkMax.ControlType.kPosition, 0, arbFF);
-        }
-        if (disabled) {
-        motor1.set(0);
+            double arbFF = KFF * Math.sin(Math.PI * armEncoder.getPosition() / (2 * FORWARD_POS));
+            if(Math.abs(armEncoder.getPosition() - FORWARD_POS) < 0.1 && Math.abs(target - FORWARD_POS) > 0.1) arbFF = 0;
+            armController.setReference(target, CANSparkMax.ControlType.kPosition, 0, arbFF);
+            System.out.println(target);
+        } else {
+            armController.setReference(0, CANSparkMax.ControlType.kVoltage);
         }
     }
 
-    public void disable(boolean checker) {
-        if(checker == true) {
+    public void toggleDisable(boolean button) {
+        if (button) {
             disabled = !disabled;
         }
     }
 
-    public void shootPos(double target, boolean shift1, boolean shift2, boolean a, boolean b, boolean x, boolean y) {
+    public void shootPos(boolean shift, boolean a, boolean b, boolean x, boolean y) {
         // is this supposed to be .setReference??
         // instead of target = 0??
-        if (shift1 && a) target = 0;
-        if (shift1 && b) target = 0;
-        if (shift1 && x) target = 0;
-        if (shift1 && y) target = 0;
-        if (shift2 && a) target = 0;
-        if (shift2 && b) target = 0;
-        if (shift2 && x) target = 0;
-        if (shift2 && y) target = 0;
+        if (!shift && a) {
+            target = armPositions[0];
+        }
+        if (!shift && b) {
+            target = armPositions[1];
+        }
+        if (!shift && x) {
+            toggleDisable(true);
+            //target = armPositions[2];
+        }
+        if (!shift && y)
+            target = armPositions[3];
+        if (shift && a)
+            target = armPositions[4];
+        if (shift && b) {
+            target = armPositions[5];
+        }
+        if (shift && x) {
+            target = armPositions[6]; 
+        }
+        if (shift && y) {
+            target = armPositions[7];
+        }
     }
 
 }
