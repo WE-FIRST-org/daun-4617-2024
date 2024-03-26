@@ -94,10 +94,12 @@ public class Arm {
             toggleDisable(true);
             //target = armPositions[2];
         }
-        if (!shift && y)
+        if (!shift && y) {
             target = armPositions[3];
-        if (shift && a)
+        }
+        if (shift && a) {
             target = armPositions[4];
+        }
         if (shift && b) {
             target = armPositions[5];
         }
