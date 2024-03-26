@@ -64,11 +64,23 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    // if(timer.get() < 2) {
+    //   intake.loop(0.8);
+    // } else if(timer.get() < 2.5) {
+    //   spinner.loop(1);
+    // } else if(timer.get() < 10) {
+    //   intake.loop(0);
+    //   spinner.loop(0);
+    //   drivetrain.auto(timer);
+    // }
+    
     if(timer.get() < 2) {
+      drivetrain.auto(timer);
+    } else if(timer.get() < 4) {
       intake.loop(0.8);
-    } else if(timer.get() < 2.5) {
+    } else if (timer.get() < 4.5) {
       spinner.loop(1);
-    } else if(timer.get() < 10) {
+    } else if(timer.get() < 12) {
       intake.loop(0);
       spinner.loop(0);
       drivetrain.auto(timer);

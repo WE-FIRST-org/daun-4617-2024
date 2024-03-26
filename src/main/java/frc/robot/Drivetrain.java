@@ -88,7 +88,38 @@ public class Drivetrain {
         //     rightDrivetrainController.setReference(13 * ROTATIONS_PER_INCH, ControlType.kPosition);
         //     leftDrivetrainController.setReference(-13 * ROTATIONS_PER_INCH, ControlType.kPosition);
         // } else 
-        if (timer.get() < 15) {
+        // if (timer.get() < 15) {
+        //     rightDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     leftDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        // }
+
+        // subwoofer is 3ft and 1/8in away from wall
+        // MIDDLE
+        if (timer.get() < 2) {
+            rightDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        } else if (timer.get() < 12) {
+            rightDrivetrainController.setReference(-36 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-36 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        }
+
+        // SOURCE SIDE
+        if (timer.get() < 2) {
+            rightDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        } else if (timer.get() < 12) {
+            rightDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        }
+
+        // AMP SIDE
+        if (timer.get() < 2) {
+            rightDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        } else if (timer.get() < 5) {
+            rightDrivetrainController.setReference(9 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-9 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        } else if (timer.get() < 12) {
             rightDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
             leftDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
         }
