@@ -24,13 +24,9 @@ public class Intake {
 
     public void loop(double speed) {
         if (shootMode) {
-            leftMotor.set(VictorSPXControlMode.PercentOutput, -1);
+            leftMotor.set(VictorSPXControlMode.PercentOutput, 1);
         } else {
             leftMotor.set(VictorSPXControlMode.PercentOutput, speed);
         }
-    }
-
-    public void shoot(boolean toggleShooter) {
-        if (toggleShooter) shootMode = !shootMode;
     }
 }

@@ -16,11 +16,11 @@ public class Arm {
     private SparkPIDController armController;
     private RelativeEncoder armEncoder;
     public boolean disabled;
-    public static final double KP = 2.6;
+    public static final double KP = 0.6;
     public static final double KI = 0;
     public static final double KD = 20;
     public static final double KIZ = 0;
-    public static final double KFF = -2.65;
+    public static final double KFF = -2.25;
     private static final double[] armPositions = new double[] {
             FORWARD_POS, -0.85, 0, BACKWARD_POS, 0, 0, 0, 0
             // a, b, (disable), y, [shifted (a, b, x, y)]
@@ -28,15 +28,16 @@ public class Arm {
     public static double target = 0;
 
     public Arm() {
-        motor1 = new CANSparkMax(7, MotorType.kBrushless);
+        motor1 = new CANSparkMax(7, MotorType.kBrushed);
         motor1.restoreFactoryDefaults();
         motor1.setIdleMode(IdleMode.kBrake);
 
-        motor2 = new CANSparkMax(8, MotorType.kBrushless);
+        motor2 = new CANSparkMax(8, MotorType.kBrushed);
         motor2.restoreFactoryDefaults();
         motor2.setIdleMode(IdleMode.kBrake);
         motor2.follow(motor1);
-
+        
+        /**
         armController = motor1.getPIDController();
         armEncoder = motor1.getEncoder();
 
@@ -50,22 +51,28 @@ public class Arm {
         armEncoder.setPosition(FORWARD_POS);
         target = armEncoder.getPosition();
         SmartDashboard.putNumber("position", 0);
+        */
     }
 
     public void updatePosSMDB() {
+        /**
         SmartDashboard.putNumber("position", armEncoder.getPosition());
         SmartDashboard.putNumber("ahhh", motor1.getAppliedOutput());
+        */
     }
 
-    public void loop() {
+    public void loop(double speed) {
+        /**
+        System.out.println(motor1.getAppliedOutput());
         if (!disabled) {
             double arbFF = KFF * Math.sin(Math.PI * armEncoder.getPosition() / (2 * FORWARD_POS));
             if(Math.abs(armEncoder.getPosition() - FORWARD_POS) < 0.1 && Math.abs(target - FORWARD_POS) > 0.1) arbFF = 0;
             armController.setReference(target, CANSparkMax.ControlType.kPosition, 0, arbFF);
-            System.out.println(target);
         } else {
             armController.setReference(0, CANSparkMax.ControlType.kVoltage);
         }
+        */
+        motor1.set(0.9 * speed);
     }
 
     public void toggleDisable(boolean button) {
@@ -102,4 +109,8 @@ public class Arm {
         }
     }
 
+    void test(double sp, double sp2) {
+        //motor1.set(sp);
+        //motor2.set(sp2);
+    }
 }

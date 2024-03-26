@@ -4,8 +4,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -22,11 +24,13 @@ public class Drivetrain {
     public boolean disabled;
 
     // they were declared public in Arm.java, will that be an issue here?
-    public static final double KP = 0;
+    public static final double KP = 0.05;
     public static final double KI = 0;
     public static final double KD = 0;
     public static final double KIZ = 0;
     public static final double KFF = 0;
+
+    public static final double ROTATIONS_PER_INCH = 0.449;
 
     public Drivetrain() {
         // Right Motors
@@ -66,7 +70,7 @@ public class Drivetrain {
         rightDrivetrainController.setOutputRange(-1, 1);
 
         rightDrivetrainEncoder.setPosition(0);
-        SmartDashboard.putNumber("drivetrain right", 0); 
+        SmartDashboard.putNumber("drivetrain right", 0);
 
         leftDrivetrainController.setP(KP);
         leftDrivetrainController.setI(KI);
@@ -76,11 +80,22 @@ public class Drivetrain {
         leftDrivetrainController.setOutputRange(-1, 1);
 
         leftDrivetrainEncoder.setPosition(0);
-        SmartDashboard.putNumber("drivetrain right", 0); 
+        SmartDashboard.putNumber("drivetrain right", 0);
+    }
+
+    public void auto(Timer timer) {
+        // if (timer.get() < 13) {
+        //     rightDrivetrainController.setReference(13 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     leftDrivetrainController.setReference(-13 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        // } else 
+        if (timer.get() < 15) {
+            rightDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        }
     }
 
     public void loop(double throttle, double turn) {
-            rightMotor1.set(((throttle < 0 ? -1 : 1 )*throttle*throttle)-((turn < 0 ? -1 : 1)*turn * turn));
-            leftMotor1.set(((throttle < 0 ? -1 : 1 )*throttle*throttle)+((turn < 0 ? -1 : 1) * turn * turn));
-   }
+        rightMotor1.set(throttle - turn);
+        leftMotor1.set(throttle + turn);
+    }
 }
