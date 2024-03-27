@@ -75,12 +75,11 @@ public class Robot extends TimedRobot {
     // }
     
     if(timer.get() < 2) {
+      intake.loop(1);
       drivetrain.auto(timer);
-    } else if(timer.get() < 4) {
-      intake.loop(0.8);
-    } else if (timer.get() < 4.5) {
+    } else if (timer.get() < 5) {
       spinner.loop(1);
-    } else if(timer.get() < 12) {
+    } else if(timer.get() < 7) {
       intake.loop(0);
       spinner.loop(0);
       drivetrain.auto(timer);
