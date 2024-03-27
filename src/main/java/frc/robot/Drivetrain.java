@@ -96,32 +96,32 @@ public class Drivetrain {
         // subwoofer is 3ft and 1/8in away from wall
         // MIDDLE
         if (timer.get() < 2) {
-            rightDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
-            leftDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            rightDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
         } else if (timer.get() < 7) {
-            rightDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
-            leftDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            rightDrivetrainController.setReference(-6 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-6 * ROTATIONS_PER_INCH, ControlType.kPosition);
         }
 
         // // SOURCE SIDE
         // if (timer.get() < 2) {
-        //     rightDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        //     leftDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     rightDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     leftDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
         // } else if (timer.get() < 12) {
-        //     rightDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        //     leftDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     rightDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     leftDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
         // }
 
         // // AMP SIDE
         // if (timer.get() < 2) {
-        //     rightDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        //     leftDrivetrainController.setReference(-24 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     rightDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     leftDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
         // } else if (timer.get() < 5) {
         //     rightDrivetrainController.setReference(9 * ROTATIONS_PER_INCH, ControlType.kPosition);
         //     leftDrivetrainController.setReference(-9 * ROTATIONS_PER_INCH, ControlType.kPosition);
         // } else if (timer.get() < 12) {
-        //     rightDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        //     leftDrivetrainController.setReference(-110 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     rightDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        //     leftDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
         // }
     }
 
