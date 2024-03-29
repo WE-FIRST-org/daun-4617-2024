@@ -83,7 +83,7 @@ public class Drivetrain {
         SmartDashboard.putNumber("drivetrain right", 0);
     }
 
-    public void auto(Timer timer) {
+    public void auto(Timer timer, String choice) {
         // if (timer.get() < 13) {
         //     rightDrivetrainController.setReference(13 * ROTATIONS_PER_INCH, ControlType.kPosition);
         //     leftDrivetrainController.setReference(-13 * ROTATIONS_PER_INCH, ControlType.kPosition);
@@ -94,35 +94,41 @@ public class Drivetrain {
         // }
 
         // subwoofer is 3ft and 1/8in away from wall
-        // MIDDLE
-        if (timer.get() < 2) {
+        if (choice.equals("Middle")) {
+            // MIDDLE
+            if (timer.get() < 5) {
+                rightDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
+                leftDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            } else if (timer.get() < 15) {
+                rightDrivetrainController.setReference(-6 * ROTATIONS_PER_INCH, ControlType.kPosition);
+                leftDrivetrainController.setReference(-6 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            }
+        } 
+        else if (choice.equals("Source")) {
+            // SOURCE SIDE
+            if (timer.get() < 5) {
+                rightDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
+                leftDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            } else if (timer.get() < 15) {
+                rightDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
+                leftDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            }
+        }
+        else if (choice.equals("Amp")) {
+        // AMP SIDE 
+        if (timer.get() < 5) {
             rightDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
             leftDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        } else if (timer.get() < 7) {
-            rightDrivetrainController.setReference(-6 * ROTATIONS_PER_INCH, ControlType.kPosition);
-            leftDrivetrainController.setReference(-6 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        } else if (timer.get() < 8) {
+            rightDrivetrainController.setReference(9 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-9 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        } else if (timer.get() < 15) {
+            rightDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
+            leftDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
+        }
         }
 
-        // // SOURCE SIDE
-        // if (timer.get() < 2) {
-        //     rightDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        //     leftDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        // } else if (timer.get() < 12) {
-        //     rightDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        //     leftDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        // }
-
-        // // AMP SIDE
-        // if (timer.get() < 2) {
-        //     rightDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        //     leftDrivetrainController.setReference(-60 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        // } else if (timer.get() < 5) {
-        //     rightDrivetrainController.setReference(9 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        //     leftDrivetrainController.setReference(-9 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        // } else if (timer.get() < 12) {
-        //     rightDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        //     leftDrivetrainController.setReference(-100 * ROTATIONS_PER_INCH, ControlType.kPosition);
-        // }
+        
     }
 
     public void loop(double throttle, double turn) {

@@ -9,6 +9,8 @@ import edu.wpi.first.cameraserver.CameraServerShared;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,10 +27,15 @@ public class Robot extends TimedRobot {
   Drivetrain drivetrain;
   Climb climb;
   boolean armUp = true;
+  private static final String kMiddleAuto = "Middle";
+  private static final String kSourceAuto = "Source";
+  private static final String kAmpAuto = "Amp";
+  private String m_autoSelected;
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
 
   private double joystickDeadband(double input) {
-    if(input * input < 0.001) {
+      if(input * input < 0.001) {
       return 0.0;
     }
     return input;
@@ -48,11 +55,16 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
     climb = new Climb();
     CameraServer.startAutomaticCapture(0);
+
+    m_chooser.setDefaultOption("Middle Auto", kMiddleAuto);
+    m_chooser.addOption("Source Auto", kSourceAuto); 
+    m_chooser.addOption("Amp Auto", kAmpAuto);
+    SmartDashboard.putData("Auto options", m_chooser);
   }
 
   @Override
   public void robotPeriodic() {
-    //arm.updatePosSMDB();
+    arm.updatePosSMDB();
   }
 
   public Timer timer;
@@ -60,10 +72,14 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     timer = new Timer();
     timer.start();
+
+    m_autoSelected = m_chooser.getSelected();
+    System.out.println("Auto selected: " + m_autoSelected);
   }
 
   @Override
   public void autonomousPeriodic() {
+    // spinner.loop(1);
     // if(timer.get() < 2) {
     //   intake.loop(0.8);
     // } else if(timer.get() < 2.5) {
@@ -72,18 +88,22 @@ public class Robot extends TimedRobot {
     //   intake.loop(0);
     //   spinner.loop(0);
     //   drivetrain.auto(timer);
-    // }
+    // }  
     
-    if(timer.get() < 2) {
+     if(timer.get() < 5) {
       intake.loop(1);
-      drivetrain.auto(timer);
-    } else if (timer.get() < 5) {
+      drivetrain.auto(timer, m_autoSelected);
+      arm.toggleDisable(true);
+      arm.loop(0.3);
+    } else if (timer.get() < 7) {
       spinner.loop(1);
-    } else if(timer.get() < 7) {
+    } else if(timer.get() < 15) {
       intake.loop(0);
       spinner.loop(0);
-      drivetrain.auto(timer);
+      arm.toggleDisable(true);
+      drivetrain.auto(timer, m_autoSelected);
     }
+
   }
 
   @Override
@@ -109,6 +129,7 @@ public class Robot extends TimedRobot {
     */
 
     // operator controls
+    arm.toggleDisable(operator.getBButtonPressed());
     double armSpeed = joystickDeadband(-operator.getLeftY() * (Math.abs(operator.getLeftY())));
     if(armSpeed > 0) {
       armSpeed *= 0.4;
@@ -117,7 +138,7 @@ public class Robot extends TimedRobot {
       armSpeed *= 0.8;
       armUp = false;
     } if(armSpeed == 0) {
-      // if(armUp) armSpeed = 0.12;
+      if(armUp) armSpeed = 0.0;
     }
     arm.loop(armSpeed);
     intake.loop(- 0.7 * joystickDeadband(operator.getRightTriggerAxis()));
@@ -135,7 +156,7 @@ public class Robot extends TimedRobot {
 
     // driver controlsq
     double reverse = driver.getLeftTriggerAxis() > 0.3 ? 1 : -1;
-    double throttle = joystickDeadband(driver.getLeftY()) * Math.abs(driver.getLeftY());
+    double throttle = joystickDeadband(-(driver.getLeftY()) * Math.abs(driver.getLeftY()));
     double steer = 0.55 * reverse * joystickDeadband(driver.getRightX()) * Math.abs(driver.getRightX());
     if(driver.getRightTriggerAxis() < 0.4) throttle *= 0.55; 
     drivetrain.loop(throttle,steer);

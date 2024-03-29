@@ -15,7 +15,7 @@ public class Arm {
     private CANSparkMax motor2;
     private SparkPIDController armController;
     private RelativeEncoder armEncoder;
-    public boolean disabled;
+    public boolean disabled = true;
     public static final double KP = 0.6;
     public static final double KI = 0;
     public static final double KD = 20;
@@ -37,7 +37,6 @@ public class Arm {
         motor2.setIdleMode(IdleMode.kBrake);
         motor2.follow(motor1);
         
-        /**
         armController = motor1.getPIDController();
         armEncoder = motor1.getEncoder();
 
@@ -48,22 +47,18 @@ public class Arm {
         armController.setFF(0, 0);
         armController.setOutputRange(-1, 1, 0);
 
-        armEncoder.setPosition(FORWARD_POS);
+        armEncoder.setPosition(BACKWARD_POS);
         target = armEncoder.getPosition();
         SmartDashboard.putNumber("position", 0);
-        */
     }
 
     public void updatePosSMDB() {
-        /**
         SmartDashboard.putNumber("position", armEncoder.getPosition());
-        SmartDashboard.putNumber("ahhh", motor1.getAppliedOutput());
-        */
+        // SmartDashboard.putNumber("ahhh", motor1.getAppliedOutput());
     }
 
     public void loop(double speed) {
-        /**
-        System.out.println(motor1.getAppliedOutput());
+        // System.out.println(motor1.getAppliedOutput());
         if (!disabled) {
             double arbFF = KFF * Math.sin(Math.PI * armEncoder.getPosition() / (2 * FORWARD_POS));
             if(Math.abs(armEncoder.getPosition() - FORWARD_POS) < 0.1 && Math.abs(target - FORWARD_POS) > 0.1) arbFF = 0;
@@ -71,8 +66,9 @@ public class Arm {
         } else {
             armController.setReference(0, CANSparkMax.ControlType.kVoltage);
         }
-        */
-        motor1.set(0.9 * speed);
+        // if (!disabled) {
+        //     motor1.set(0.9 * speed);
+        // }
     }
 
     public void toggleDisable(boolean button) {
@@ -81,35 +77,35 @@ public class Arm {
         }
     }
 
-    public void shootPos(boolean shift, boolean a, boolean b, boolean x, boolean y) {
-        // is this supposed to be .setReference??
-        // instead of target = 0??
-        if (!shift && a) {
-            target = armPositions[0];
-        }
-        if (!shift && b) {
-            target = armPositions[1];
-        }
-        if (!shift && x) {
-            toggleDisable(true);
-            //target = armPositions[2];
-        }
-        if (!shift && y) {
-            target = armPositions[3];
-        }
-        if (shift && a) {
-            target = armPositions[4];
-        }
-        if (shift && b) {
-            target = armPositions[5];
-        }
-        if (shift && x) {
-            target = armPositions[6]; 
-        }
-        if (shift && y) {
-            target = armPositions[7];
-        }
-    }
+    // public void shootPos(boolean shift, boolean a, boolean b, boolean x, boolean y) {
+    //     // is this supposed to be .setReference??
+    //     // instead of target = 0??
+    //     if (!shift && a) {
+    //         target = armPositions[0];
+    //     }
+    //     if (!shift && b) {
+    //         target = armPositions[1];
+    //     }
+    //     if (!shift && x) {
+    //         toggleDisable(true);
+    //         //target = armPositions[2];
+    //     }
+    //     if (!shift && y) {
+    //         target = armPositions[3];
+    //     }
+    //     if (shift && a) {
+    //         target = armPositions[4];
+    //     }
+    //     if (shift && b) {
+    //         target = armPositions[5];
+    //     }
+    //     if (shift && x) {
+    //         target = armPositions[6]; 
+    //     }
+    //     if (shift && y) {
+    //         target = armPositions[7];
+    //     }
+    // }
 
     void test(double sp, double sp2) {
         //motor1.set(sp);
