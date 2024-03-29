@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
       intake.loop(1);
       drivetrain.auto(timer, m_autoSelected);
       arm.toggleDisable(true);
-      arm.loop(0.3);
+      arm.loop(-0.55);
     } else if (timer.get() < 7) {
       spinner.loop(1);
     } else if(timer.get() < 15) {
@@ -130,17 +130,18 @@ public class Robot extends TimedRobot {
 
     // operator controls
     arm.toggleDisable(operator.getBButtonPressed());
-    double armSpeed = joystickDeadband(-operator.getLeftY() * (Math.abs(operator.getLeftY())));
-    if(armSpeed > 0) {
-      armSpeed *= 0.4;
-      armUp = true;
-    } else if(armSpeed < 0) {
-      armSpeed *= 0.8;
-      armUp = false;
-    } if(armSpeed == 0) {
-      if(armUp) armSpeed = 0.0;
-    }
-    arm.loop(armSpeed);
+    // double armSpeed = joystickDeadband(-operator.getLeftY() * (Math.abs(operator.getLeftY())));
+    // if(armSpeed > 0) {
+    //   armSpeed *= 0.4;
+    //   armUp = true;
+    // } else if(armSpeed < 0) {
+    //   armSpeed *= 0.8;
+    //   armUp = false;
+    // } if(armSpeed == 0) {
+    //   if(armUp) armSpeed = 0.0;
+    // }
+    // arm.loop(armSpeed);
+    arm.loop(operator.getLeftY());
     intake.loop(- 0.7 * joystickDeadband(operator.getRightTriggerAxis()));
     if(operator.getLeftTriggerAxis() > 0.2) {
       System.out.println(operator.getLeftTriggerAxis());
@@ -157,7 +158,7 @@ public class Robot extends TimedRobot {
     // driver controlsq
     double reverse = driver.getLeftTriggerAxis() > 0.3 ? 1 : -1;
     double throttle = joystickDeadband(-(driver.getLeftY()) * Math.abs(driver.getLeftY()));
-    double steer = 0.55 * reverse * joystickDeadband(driver.getRightX()) * Math.abs(driver.getRightX());
+    double steer = 0.25 * reverse * joystickDeadband(driver.getRightX()) * Math.abs(driver.getRightX());
     if(driver.getRightTriggerAxis() < 0.4) throttle *= 0.55; 
     drivetrain.loop(throttle,steer);
   }

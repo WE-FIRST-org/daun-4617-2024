@@ -9,8 +9,8 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Arm {
-    public static final double FORWARD_POS = 2.404;
-    public static final double BACKWARD_POS = -1.12;
+    public static final double FORWARD_POS = 2.404; // before: 2.404
+    public static final double BACKWARD_POS = -1.12; // before: -1.12
     private CANSparkMax motor1;
     private CANSparkMax motor2;
     private SparkPIDController armController;
@@ -20,7 +20,7 @@ public class Arm {
     public static final double KI = 0;
     public static final double KD = 20;
     public static final double KIZ = 0;
-    public static final double KFF = -2.25;
+    public static final double KFF = +0.15; // -2.25 before
     private static final double[] armPositions = new double[] {
             FORWARD_POS, -0.85, 0, BACKWARD_POS, 0, 0, 0, 0
             // a, b, (disable), y, [shifted (a, b, x, y)]
@@ -57,11 +57,18 @@ public class Arm {
         // SmartDashboard.putNumber("ahhh", motor1.getAppliedOutput());
     }
 
-    public void loop(double speed) {
+    public void loop(double setTarget) {
+        if (setTarget > 0.5) {
+            target = FORWARD_POS;
+        } else if (setTarget < -0.5) {
+            target = BACKWARD_POS;
+        }
+
         // System.out.println(motor1.getAppliedOutput());
         if (!disabled) {
-            double arbFF = KFF * Math.sin(Math.PI * armEncoder.getPosition() / (2 * FORWARD_POS));
-            if(Math.abs(armEncoder.getPosition() - FORWARD_POS) < 0.1 && Math.abs(target - FORWARD_POS) > 0.1) arbFF = 0;
+            double arbFF = KFF * (FORWARD_POS - armEncoder.getPosition()) / FORWARD_POS;
+            // double arbFF = KFF * Math.sin(Math.PI * armEncoder.getPosition() / (2 * FORWARD_POS));
+            // if(Math.abs(armEncoder.getPosition() - FORWARD_POS) < 0.1 && Math.abs(target - FORWARD_POS) > 0.1) arbFF = 0;
             armController.setReference(target, CANSparkMax.ControlType.kPosition, 0, arbFF);
         } else {
             armController.setReference(0, CANSparkMax.ControlType.kVoltage);
